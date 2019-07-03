@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <link rel='stylesheet' href="stylesheets/style.css"/> -->
+  <center><title>CRUD de Alunos</title></center>
+</head>
+<body>
+  <center>
+  <h1>Listagem de Alunos</h1>
+  <p>Alunos já cadastrados no sistema.</p>
+  <table style="width:50%">
+    <thead>
+      <tr style="background-color:#CCC">
+        <td style="width:50%">Nome</td>
+        <td style="width:15%">Média</td>
+        <td style="width:15%">Situação</td>
+        <td colspan="2">Ações</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% if not alunos %}
+        <tr>
+          <td colspan="4">Nenhum aluno cadastrado.</td>
+        </tr>
+      {% else %}
+        {% for aluno in alunos %}
+          <tr>
+            <td style="width:50%">{{ aluno[1] }}</td>
+            <td style="width:15%">{{ aluno[6] }}</td>
+            <td style="width:25%">
+              {% if aluno[7] == 1 %}
+                <p>Aprovado</p>
+              {% elif aluno[7] == 2 %}
+                <p>Reprovado</p>
+              {% elif aluno[7] == 3 %}
+                <p>Em recuperação</p>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ url_for('editar', idaluno=aluno[0]) }}">Editar</a>
+            </td>  
+            <td>  
+              <a href="{{ url_for('excluir', idaluno=aluno[0]) }}" onclick="return confirm('Tem certeza?');">Excluir</a> 
+            </td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4">
+          <a href="/novoaluno">Cadastrar Novo</a>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</center>
+<script>
+  if(location.href.indexOf('excluido=true') != -1){
+    alert('Aluno excluido com sucesso!');
+  }
+  else if(location.href.indexOf('edit=true') != -1){
+    alert('Aluno editado com sucesso!');
+  }
+  else if(location.href.indexOf('new=true') != -1){
+    alert('Aluno cadastrado com sucesso!');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel='stylesheet' href="/stylesheets/style.css">
+    <title>CRUD de Aluno</title>
+</head>
+<body>
+    <center>
+    <p>Preencha os dados abaixo para salvar o novo Aluno.</p>
+{% if action == 'cadastrar' %}
+    <form action="{{ url_for('cadastrar') }}" method="POST">
+{% elif action == 'atualizar' %}
+    <form action="{{ url_for('atualizar') }}" method="POST">
+{% endif %}
+        <p>
+        <label>Nome:
+            {% if aluno  %}
+            <input type="hidden" name='idaluno' value="{{ aluno[0] }}">   
+            <input required type="text" name="nome" value="{{ aluno[1] }}" size="30"/>
+            {% else %}
+                <input required type="text" name="nome" value="" size="30"/>
+            {% endif %}
+        </label>
+        </p>
+        <p>
+        <lable>Nota 1:
+            {% if aluno  %}
+                <input required type="number" name="n1" value="{{ aluno[2] }}" min="0" max="10"/>
+            {% else %}
+                <input required type="number" name="n1" value="" min="0" max="10"/>
+            {% endif %}
+        </lable>
+        </p>
+        <p>
+        <lable>Nota 2:
+            {% if aluno  %}
+                <input required type="number" name="n2" value="{{ aluno[3] }}" min="0" max="10"/>
+            {% else %}
+                <input required type="number" name="n2" value="" min="0" max="10"/>
+            {% endif %}
+        </lable>
+        </p>
+        <p>
+        <lable>Nota 3:
+            {% if aluno  %}
+                <input required type="number" name="n3" value="{{ aluno[4] }}" min="0" max="10"/>
+            {% else %}
+                <input required type="number" name="n3" value="" min="0" max="10"/>
+            {% endif %}
+        </lable>
+        </p>
+        <p>
+        <lable>Nota 4:
+            {% if aluno  %}
+                <input required type="number" name="n4" value="{{ aluno[5] }}" min="0" max="10"/>
+            {% else %}
+                <input required type="number" name="n4" value="" min="0" max="10"/>
+            {% endif %}
+        </lable>
+        </p>
+        <p>
+            <a href="/">Cancelar</a> | <input type="submit" value="Salvar" />
+        </p>
+    </form>
+</center>
+</body>
+</html>

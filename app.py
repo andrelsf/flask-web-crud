@@ -36,7 +36,7 @@ def cadastrar():
         if nome and n1 and n2 and n3 and n4:
             dbsqlite = DBSqlite()
             if dbsqlite.insert_aluno(nome, n1, n2, n3, n4):
-                return redirect(url_for("index"))
+                return redirect(url_for("index", novoaluno='true'))
             else:
                 return redirect(url_for("err"))
         else:
@@ -46,7 +46,7 @@ def cadastrar():
 
 @app.route('/err/')
 def err():
-    return "[ ERROR ] : Falha ao salva. <a href='{}'>Voltar</a>".format(
+    return "<p><b>[ ERROR ]</b> : Falha ao salva :(. <a href='{}'>Voltar</a>".format(
         url_for('index')
     )
 
@@ -74,7 +74,7 @@ def atualizar():
         if nome and n1 and n2 and n3 and n4:
             dbsqlite = DBSqlite()
             if (dbsqlite.update_aluno(id_aluno, nome, n1, n2, n3, n4)):
-                return redirect(url_for('index'))
+                return redirect(url_for('index', editar='true'))
             else:
                 return redirect(url_for('err'))
     return redirect(url_for('index'))
@@ -87,7 +87,7 @@ def atualizar():
 def excluir(idaluno):
     dbsqlite = DBSqlite()
     if dbsqlite.excluir_aluno(idaluno):
-        return redirect(url_for('index'))
+        return redirect(url_for('index', excluir='true'))
     else:
         return redirect(url_for('err'))
 

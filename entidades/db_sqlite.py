@@ -2,11 +2,17 @@ import sqlite3
 
 class DBSqlite():
 
+    def __init__(self):
+        try:
+            self.conn = sqlite3.connect("database/alunos.db")
+            self.cursor = self.conn.cursor()
+        except Exception as err:
+            print("[ __init__ DBSqlite ] :", err)
+
+
     def create_table_alunos(self):
         try:
-            conn = sqlite3.connect("database/alunos.db")
-            cursor = conn.cursor()
-            cursor.execute("""
+            self.cursor.execute("""
                 CREATE TABLE IF NOT EXISTS alunos (
                     id_aluno INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                     nome_aluno TEXT(250) NOT NULL,
@@ -22,45 +28,45 @@ class DBSqlite():
             print("[ __init__ ERROR ] :", err)
             return False
         else:
-            conn.close()
+            self.conn.close()
             return True
                 
 
     def get_alunos(self):
         try:
-            conn = sqlite3.connect("database/alunos.db")
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM alunos;")
-            alunos = cursor.fetchall()
+            self.cursor.execute("SELECT * FROM alunos;")
+            alunos = self.cursor.fetchall()
         except Exception as err:
             print("[ get_conncet ERROR ] :", err)
         else:
-            conn.close()
+            self.conn.close()
             return alunos
 
     
     def get_aluno_by_id(self, id_aluno):
         try:
-            conn = sqlite3.connect("database/alunos.db")
-            cursor = conn.cursor()
-            cursor.execute(
+            self.cursor.execute(
                 "SELECT * FROM alunos WHERE id_aluno = {};".format(id_aluno)
             )
-            aluno = cursor.fetchone()
+            aluno = self.cursor.fetchone()
         except Exception as err:
             print("[ get_conncet ERROR ] :", err)
         else:
-            conn.close()
+            self.conn.close()
             return aluno
+
+
+    def calcula_media(self, *notas):
+        return (sum(notas))/4
 
 
     def insert_aluno(self, nome, n1, n2, n3, n4):
         try:
-            conn = sqlite3.connect('database/alunos.db')
-            cursor = conn.cursor()
-            media = (float(n1) + float(n2) + float(n3) + float(n4))/4
+            media = self.calcula_media(
+                    float(n1), float(n2), float(n3), float(n4)
+                )
             situacao = self._verifica_situacao_aluno(media)
-            cursor.execute(
+            self.cursor.execute(
                 """
                 INSERT INTO alunos (nome_aluno, n1, n2, n3, n4, media, situacao) 
                 VALUES ('{nome}', {n1}, {n2}, {n3}, {n4}, {media}, {situacao});
@@ -76,11 +82,11 @@ class DBSqlite():
             )
         except Exception as err:
             print("[ insert_aluno ERROR ] :", err)
-            conn.close()
+            self.conn.close()
             return False
         else:
-            conn.commit()
-            conn.close()
+            self.conn.commit()
+            self.conn.close()
             return True
 
     def _verifica_situacao_aluno(self, media):
@@ -94,25 +100,23 @@ class DBSqlite():
 
     def excluir_aluno(self, id_aluno):
         try:
-            conn = sqlite3.connect('database/alunos.db')
-            cursor = conn.cursor()
-            cursor.execute("""DELETE FROM alunos WHERE id_aluno = {};""".format(id_aluno))
+            self.cursor.execute("""DELETE FROM alunos WHERE id_aluno = {};""".format(id_aluno))
         except Exception as err:
             print("[ excluir_aluno ERROR ] :", err)
-            conn.close()
+            self.conn.close()
             return False
         else:
-            conn.commit()
-            conn.close()
+            self.conn.commit()
+            self.conn.close()
             return True
 
     def update_aluno(self, id_aluno, nome, n1, n2, n3, n4):
         try:
-            conn = sqlite3.connect('database/alunos.db')
-            cursor = conn.cursor()
-            media = (float(n1) + float(n2) + float(n3) + float(n4))/4
+            media = self.calcula_media(
+                    float(n1), float(n2), float(n3), float(n4)
+                )
             situacao = self._verifica_situacao_aluno(media)
-            cursor.execute(
+            self.cursor.execute(
                 """
                 UPDATE 
                     alunos 
@@ -139,9 +143,9 @@ class DBSqlite():
             )
         except Exception as err:
             print("[ insert_aluno ERROR ] :", err)
-            conn.close()
+            self.conn.close()
             return False
         else:
-            conn.commit()
-            conn.close()
+            self.conn.commit()
+            self.conn.close()
             return True

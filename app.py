@@ -11,7 +11,8 @@ app = Flask(__name__, template_folder="templates/html/")
 @app.route('/')
 @app.route('/index')
 def index():
-    alunos = db.get_alunos()
+    dbsqlite = DBSqlite()
+    alunos = dbsqlite.get_alunos()
     return render_template("index.html", alunos=alunos)
 
 
@@ -33,7 +34,8 @@ def cadastrar():
         n3 = (request.form.get("n3"))
         n4 = (request.form.get("n4"))
         if nome and n1 and n2 and n3 and n4:
-            if db.insert_aluno(nome, n1, n2, n3, n4):
+            dbsqlite = DBSqlite()
+            if dbsqlite.insert_aluno(nome, n1, n2, n3, n4):
                 return redirect(url_for("index"))
             else:
                 return redirect(url_for("err"))
@@ -54,8 +56,9 @@ def err():
 #
 @app.route('/editar/<int:idaluno>')
 def editar(idaluno):
+    dbsqlite = DBSqlite()
     action = { 'name': 'atualizar' }
-    aluno = db.get_aluno_by_id(id_aluno=idaluno)
+    aluno = dbsqlite.get_aluno_by_id(id_aluno=idaluno)
     return render_template("novoaluno.html", action=action, aluno=aluno)
 
 
@@ -69,7 +72,8 @@ def atualizar():
         n3 = (request.form.get("n3"))
         n4 = (request.form.get("n4"))
         if nome and n1 and n2 and n3 and n4:
-            if (db.update_aluno(id_aluno, nome, n1, n2, n3, n4)):
+            dbsqlite = DBSqlite()
+            if (dbsqlite.update_aluno(id_aluno, nome, n1, n2, n3, n4)):
                 return redirect(url_for('index'))
             else:
                 return redirect(url_for('err'))
@@ -81,7 +85,8 @@ def atualizar():
 #
 @app.route('/excluir/<int:idaluno>')
 def excluir(idaluno):
-    if db.excluir_aluno(idaluno):
+    dbsqlite = DBSqlite()
+    if dbsqlite.excluir_aluno(idaluno):
         return redirect(url_for('index'))
     else:
         return redirect(url_for('err'))

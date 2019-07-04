@@ -20,7 +20,8 @@ def index():
 #
 @app.route('/novoaluno')
 def novoaluno():
-    return render_template("novoaluno.html", action="cadastrar")
+    action = { 'name': 'cadastrar'}
+    return render_template("novoaluno.html", action=action)
 
 
 @app.route('/cadastrar', methods=['GET', 'POST'])
@@ -53,8 +54,9 @@ def err():
 #
 @app.route('/editar/<int:idaluno>')
 def editar(idaluno):
+    action = { 'name': 'atualizar' }
     aluno = db.get_aluno_by_id(id_aluno=idaluno)
-    return render_template("novoaluno.html", action="atualizar", aluno=aluno)
+    return render_template("novoaluno.html", action=action, aluno=aluno)
 
 
 @app.route('/atualizar', methods=['GET', 'POST'])

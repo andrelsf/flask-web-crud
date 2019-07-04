@@ -8,13 +8,8 @@
     <title>CRUD de Aluno</title>
 </head>
 <body>
-    <center>
     <p>Preencha os dados abaixo para salvar o novo Aluno.</p>
-{% if action == 'cadastrar' %}
-    <form action="{{ url_for('cadastrar') }}" method="POST">
-{% elif action == 'atualizar' %}
-    <form action="{{ url_for('atualizar') }}" method="POST">
-{% endif %}
+    <form action="/{{ action['name'] }}" method="POST">
         <p>
         <label>Nome:
             {% if aluno  %}
@@ -65,6 +60,5 @@
             <a href="/">Cancelar</a> | <input type="submit" value="Salvar" />
         </p>
     </form>
-</center>
 </body>
 </html>

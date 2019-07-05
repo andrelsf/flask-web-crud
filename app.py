@@ -22,7 +22,8 @@ def index():
 @app.route('/novoaluno')
 def novoaluno():
     action = { 'name': 'cadastrar'}
-    return render_template("novoaluno.html", action=action)
+    aluno = ('', '', '', '', '', '')
+    return render_template("novoaluno.html", action=action, aluno=aluno)
 
 
 @app.route('/cadastrar', methods=['GET', 'POST'])
